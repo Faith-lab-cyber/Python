@@ -1,0 +1,78 @@
+# Parent class (Superclass)
+class Device:
+    def __init__(self, brand, model):
+        self.brand = brand
+        self.model = model
+
+    def display_info(self):
+        print(f"Brand: {self.brand}")
+        print(f"Model: {self.model}")
+
+
+# Child class (Smartphone inherits from Device)
+class Smartphone(Device):
+    def __init__(self, brand, model, battery_percentage):
+        super().__init__(brand, model)
+        self.__battery_percentage = battery_percentage  # Private attribute
+
+    def check_battery(self):
+        print(f"Battery: {self.__battery_percentage}%")
+
+    def charge(self):
+        if self.__battery_percentage < 100:
+            self.__battery_percentage += 10
+            print(f"Charging... Battery is now {self.__battery_percentage}%")
+        else:
+            print("Battery is already full!")
+
+    # Encapsulation: getter and setter methods for battery
+    def get_battery(self):
+        return self.__battery_percentage
+
+    def set_battery(self, percentage):
+        if 0 <= percentage <= 100:
+            self.__battery_percentage = percentage
+        else:
+            print("Invalid battery percentage!")
+
+# Creating a Smartphone object
+phone = Smartphone("Apple", "iPhone 13", 50)
+
+# Displaying information and interacting with the object
+phone.display_info()
+phone.check_battery()
+phone.charge()
+phone.check_battery()
+phone.set_battery(90)
+phone.check_battery()
+
+# Base class (Superclass)
+class Animal:
+    def move(self):
+        pass  # No implementation in base class, it will be overridden by subclasses
+
+# Dog class (Subclass)
+class Dog(Animal):
+    def move(self):
+        print("Running 🐕")
+
+# Bird class (Subclass)
+class Bird(Animal):
+    def move(self):
+        print("Flying 🐦")
+
+# Fish class (Subclass)
+class Fish(Animal):
+    def move(self):
+        print("Swimming 🐟")
+
+# Creating instances of different animals
+dog = Dog()
+bird = Bird()
+fish = Fish()
+
+# Calling the move method for each animal
+dog.move()   # Output: Running 🐕
+bird.move()  # Output: Flying 🐦
+fish.move()  # Output: Swimming 🐟
+
