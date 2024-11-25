@@ -1,0 +1,47 @@
+def modify_file(input_filename, output_filename):
+    try:
+        # Open the input file in read mode
+        with open(input_filename, 'r') as infile:
+            content = infile.read()
+
+        # Modify the content (for example, converting text to uppercase)
+        modified_content = content.upper()
+
+        # Write the modified content to a new output file
+        with open(output_filename, 'w') as outfile:
+            outfile.write(modified_content)
+
+        print(f"File modified successfully. Output saved to {output_filename}")
+
+    except FileNotFoundError:
+        print(f"Error: The file {input_filename} was not found.")
+    except IOError as e:
+        print(f"Error reading or writing the file: {e}")
+
+
+# Ask the user for filenames
+input_file = input("Enter the input file name: ")
+output_file = input("Enter the output file name: ")
+
+# Call the function to modify and save the file
+modify_file(input_file, output_file)
+
+def read_file(filename):
+    try:
+        # Try to open the file in read mode
+        with open(filename, 'r') as file:
+            content = file.read()
+            print(f"Content of {filename}:")
+            print(content)
+
+    except FileNotFoundError:
+        print(f"Error: The file {filename} does not exist.")
+    except IOError as e:
+        print(f"Error: Cannot read the file {filename}. Reason: {e}")
+
+
+# Ask the user for a filename
+filename = input("Enter the filename to read: ")
+
+# Call the function to read the file
+read_file(filename)
