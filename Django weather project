@@ -1,0 +1,72 @@
+Install Django: pip install django
+Start a project: django-admin startproject weather_project
+Navigate to the project folder: cd weather_project
+Create an app: python manage.py startapp weather
+Install requests for API calls: pip install requests
+ weather_project/settings.py, add 'weather' to INSTALLED_APPS.
+
+
+from django.db import models
+class City(models.Model):
+    name = models.CharField(max_length=100)
+    def __str__(self):
+        return self.name
+
+python manage.py makemigrations
+python manage.py migrate
+import requests
+from django.shortcuts import render
+
+def home(request):
+    city = request.GET.get('city', 'London')  # Default city
+    api_key = 'your_api_key'
+    url = f'https://api.openweathermap.org/data/2.5/weather?q={city}&appid={api_key}&units=metric'
+    response = requests.get(url)
+    weather_data = response.json()
+
+    context = {
+        'city': city,
+        'temperature': weather_data.get('main', {}).get('temp'),
+        'description': weather_data.get('weather', [{}])[0].get('description'),
+        'icon': weather_data.get('weather', [{}])[0].get('icon'),
+    }
+    return render(request, 'weather/home.html', context)
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Weather App</title>
+</head>
+<body>
+    <h1>Weather in {{ city }}</h1>
+    <p>Temperature: {{ temperature }}°C</p>
+    <p>Description: {{ description }}</p>
+    <img src="http://openweathermap.org/img/wn/{{ icon }}@2x.png" alt="Weather icon">
+
+    <form method="get">
+        <input type="text" name="city" placeholder="Enter city">
+        <button type="submit">Get Weather</button>
+    </form>
+</body>
+</html>
+
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.home, name='home'),
+]
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('weather.urls')),
+]
+
+python manage.py runserver
+
+
+
+
